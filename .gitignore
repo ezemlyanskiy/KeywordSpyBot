@@ -1,0 +1,10 @@
+# Ignore Python junk
+__pycache__/
+*.pyc
+
+# Ignore virtual env (if inside project)
+venv/
+.env
+
+# Ignore IDE settings (optional)
+.idea/

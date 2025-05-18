@@ -10,10 +10,6 @@ BOT_TOKEN = os.getenv('BOT_TOKEN')
 KEYWORDS = os.getenv('KEYWORDS', '').split(',')
 USER_IDS_TO_NOTIFY = [int(uid.strip()) for uid in os.getenv('USER_IDS_TO_NOTIFY', '').split(',')]
 
-print(f"Loaded BOT_TOKEN = {BOT_TOKEN[:10]}...")  # Masked for safety
-print(f"KEYWORDS = {KEYWORDS}")
-print(f"USER_IDS_TO_NOTIFY = {USER_IDS_TO_NOTIFY}")
-
 async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
     await update.message.reply_text("✅ You have subscribed to alerts!")
 

@@ -21,10 +21,10 @@ async def check_message(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
     message_text = update.message.text.lower()
 
-    if "ContainerKilled" in message_text:
-        if "Alerts Firing" in message_text:
+    if "containerkilled" in message_text:
+        if "alerts firing" in message_text:
             alert_text = "Упал контейнер системы, обрати внимание и проверь интеграции, подробности в чате мониторинга."
-        elif "Alerts Resolved" in message_text:
+        elif "alerts resolved" in message_text:
             alert_text = "Контейнер системы поднялся, подробности в чате мониторинга."
         else:
             return

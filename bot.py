@@ -7,11 +7,13 @@ from dotenv import load_dotenv
 load_dotenv()
 
 BOT_TOKEN = os.getenv('BOT_TOKEN')
-KEYWORDS = os.getenv('KEYWORDS', '').split(',')
 USER_IDS_TO_NOTIFY = [int(uid.strip()) for uid in os.getenv('USER_IDS_TO_NOTIFY', '').split(',')]
 
+if BOT_TOKEN is None:
+    raise ValueError('BOT_TOKEN must be set')
+
 async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
-    await update.message.reply_text("✅ You have subscribed to alerts!")
+    await update.message.reply_text("✅ Вы подписаны на уведомления о состоянии контейнера!")
 
 async def check_message(update: Update, context: ContextTypes.DEFAULT_TYPE):
     if update.message is None or update.message.text is None:
@@ -19,10 +21,16 @@ async def check_message(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
     message_text = update.message.text.lower()
 
-    if any(keyword in message_text for keyword in KEYWORDS):
+    if "ContainerKilled" in message_text:
+        if "Alerts Firing" in message_text:
+            alert_text = "Упал контейнер системы, обрати внимание и проверь интеграции, подробности в чате мониторинга."
+        elif "Alerts Resolved" in message_text:
+            alert_text = "Контейнер системы поднялся, подробности в чате мониторинга."
+        else:
+            return
+
         for user_id in USER_IDS_TO_NOTIFY:
             try:
-                alert_text = f"🚨 Keyword alert from group:\n\n\"{update.message.text}\""
                 await context.bot.send_message(chat_id=user_id, text=alert_text)
             except Exception as e:
                 print(f"Failed to send message to {user_id}: {e}")
